@@ -21,10 +21,10 @@ char chr(uint8_t value)
  * Convert an integer value to a string in the number system specified
  * by base and store the string representation of value in str.
  */
-char *itoa(uint8_t value, char *str, uint8_t base)
+char *itoa(int value, char *str, int base)
 {
-	uint8_t num_digits = 0;
-	uint8_t tmp;
+	int num_digits = 0;
+	int tmp;
 	if (value == 0) {
 		str[0] = chr(0);
 		return str;
@@ -33,7 +33,7 @@ char *itoa(uint8_t value, char *str, uint8_t base)
 		num_digits++;
 	}
 	tmp = value;
-	for (uint8_t i = 0; i < num_digits; i++) {
+	for (int i = 0; i < num_digits; i++) {
 		if (tmp % base < 10) {
 			str[num_digits - i - 1] = chr(tmp % base);
 		} else {
@@ -58,7 +58,7 @@ void printk(const char *fmt, ...)
 {
 	va_list ap;
 	uint8_t fmtln = strlen(fmt);
-	char numstr[5] = {0};
+	char numstr[32] = {0};
 	va_start(ap, fmt);
 	for (uint8_t i = 0; i < fmtln; i++) {
 		if (fmt[i] != '%') {

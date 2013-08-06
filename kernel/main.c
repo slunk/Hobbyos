@@ -3,15 +3,21 @@
 #include <stdint.h>
 #include <display.h>
 #include <printk.h>
+#include <string.h>
+#include <interrupt.h>
+#include <gdt.h>
 
 /*
- * Mail method invoked by boot.s
+ * Main function invoked by boot.s
  */
 void kernel_main()
 {
 	terminal_initialize();
-	terminal_writestring("Hello, kernel world!\n");
-	for (uint8_t i = 0; i < 30; i++) {
-		printk("Iteration %d %x\n", i, i);
+	gdt_install();
+	idt_install();
+	isrs_install();
+	printk("Hello, kernel world!\n");
+	for (int x = 5; x > -1; x--) {
+		printk("%d\n", 4 / x);
 	}
 }
