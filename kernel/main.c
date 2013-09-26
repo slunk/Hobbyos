@@ -38,7 +38,7 @@ extern void irq15();
 
 void *irq_routines[16] = {0};
 
-void iqr_install_handler(int irq, void (*handler)(struct regs *r))
+void irq_install_handler(int irq, void (*handler)(struct regs *r))
 {
 	irq_routines[irq] = handler;
 }
@@ -101,6 +101,29 @@ void irq_handler(struct regs *r)
 	outportb(0x20, 0x20);
 }
 
+void timer_phase(int hz)
+{
+	int divisor = 1193180 / hz;
+	outportb(0x43, 0x36);
+	outportb(0x40, divisor & 0xFF);
+	outportb(0x40, divisor >> 8);
+}
+
+void timer_handler(struct regs *r)
+{
+	static int timer_ticks = 0;
+	timer_ticks++;
+
+	if (timer_ticks % 18 == 0) {
+		printk("One second has passed\n");
+	}
+}
+
+void timer_install()
+{
+	irq_install_handler(0, timer_handler);
+}
+
 /*
  * Main function invoked by boot.s
  */
@@ -111,6 +134,8 @@ void kernel_main()
 	idt_install();
 	isrs_install();
 	irq_install();
+	timer_install();
+	__asm__ __volatile__ ("sti");
 	printk("Hello, kernel world!\n");
 	for(;;);
 	/*for (int x = 5; x > -1; x--) {
