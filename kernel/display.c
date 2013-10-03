@@ -71,7 +71,19 @@ void terminal_putchar(char c)
 		memset(&terminal_buffer[index], 0, bytes);
 		terminal_column = 0;
 		if (++terminal_row == VGA_HEIGHT) {
-			terminal_row = 0;
+			terminal_column = 0;
+			terminal_scroll();
+		}
+		break;
+	case '\b':
+		terminal_putentryat(0, terminal_color, terminal_column, terminal_row);
+		if (terminal_column > 0) {
+			terminal_putentryat(0, terminal_color, --terminal_column, terminal_row);
+		} else {
+			terminal_row--;
+			for (terminal_column = 0;
+				terminal_buffer[terminal_row * VGA_WIDTH + terminal_column] != 0;
+				terminal_column++);
 		}
 		break;
 	default:
@@ -79,12 +91,22 @@ void terminal_putchar(char c)
 		if (++terminal_column == VGA_WIDTH) {
 			terminal_column = 0;
 			if (++terminal_row == VGA_HEIGHT) {
-				terminal_row = 0;
+				terminal_scroll();
 			}
 		}
 		break;
 	}
-	return;
+	terminal_putentryat('_', terminal_color, terminal_column, terminal_row);
+}
+
+void terminal_scroll()
+{
+	memcpy(terminal_buffer,
+		&terminal_buffer[VGA_WIDTH],
+		(VGA_HEIGHT - 1) * VGA_WIDTH * sizeof(*terminal_buffer));
+	memset(&terminal_buffer[VGA_WIDTH * (VGA_HEIGHT - 1)],
+		0, VGA_WIDTH * sizeof(*terminal_buffer));
+	terminal_row = VGA_HEIGHT - 1;
 }
 
 void terminal_writestring(const char *data)

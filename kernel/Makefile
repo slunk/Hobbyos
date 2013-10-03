@@ -3,7 +3,7 @@ AS=/home/peter/opt/cross/bin/i586-elf-as
 
 KERNEL=hobbyos.bin
 CFLAGS=-std=gnu99 -ffreestanding -O2 -Wall -Wextra
-CSOURCES=display.c main.c printk.c string.c interrupt.c gdt.c
+CSOURCES=display.c main.c printk.c string.c interrupt.c gdt.c keyboard.c
 ASM=boot.s
 INCLUDE=../include
 ISODIR=../isodir

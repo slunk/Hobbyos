@@ -6,6 +6,7 @@
 #include <string.h>
 #include <interrupt.h>
 #include <gdt.h>
+#include <keyboard.h>
 
 uint8_t inportb(uint16_t _port)
 {
@@ -115,7 +116,7 @@ void timer_handler(struct regs *r)
 	timer_ticks++;
 
 	if (timer_ticks % 18 == 0) {
-		printk("One second has passed\n");
+		/* printk("One second has passed\n"); */
 	}
 }
 
@@ -135,6 +136,7 @@ void kernel_main()
 	isrs_install();
 	irq_install();
 	timer_install();
+	irq_install_handler(1, keyboard_handler);
 	__asm__ __volatile__ ("sti");
 	printk("Hello, kernel world!\n");
 	for(;;);
