@@ -7,6 +7,7 @@
 #include <interrupt.h>
 #include <gdt.h>
 #include <keyboard.h>
+#include <page.h>
 
 uint8_t inportb(uint16_t _port)
 {
@@ -137,10 +138,14 @@ void kernel_main()
 	irq_install();
 	timer_install();
 	irq_install_handler(1, keyboard_handler);
+	paging_install();
 	__asm__ __volatile__ ("sti");
 	printk("Hello, kernel world!\n");
-	for(;;);
+	uint32_t *ptr = (uint32_t *) 0xA0000000;
+	uint32_t do_page_fault = *ptr;
+	printk("%d\n", do_page_fault);
 	/*for (int x = 5; x > -1; x--) {
 		printk("%d\n", 4 / x);
 	}*/
+	for(;;);
 }
