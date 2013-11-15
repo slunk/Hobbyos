@@ -11,7 +11,7 @@ struct page {
 	uint32_t dirty : 1;
 	uint32_t rsvd_1 : 2;
 	uint32_t avail : 3;
-	uint32_t frame : 12;
+	uint32_t frame : 20;
 } __attribute__((packed));
 
 struct page_table {
