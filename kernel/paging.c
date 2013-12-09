@@ -77,10 +77,5 @@ void paging_install()
 	kernel_dir->tables[0] = table;
 	kernel_dir->tables_physical[0] = ((uint32_t) table->pages) | 3;
 
-	for (i = ALIGN(placement_addr); i < 0x1000000; i += 0x1000) {
-		printk("%x\n", i);
-		push_frame(i);
-	}
-
 	switch_to_page_dir(kernel_dir);
 }
