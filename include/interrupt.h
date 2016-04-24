@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <system.h>
 
 struct idt_entry {
 	uint16_t base_lo;
@@ -16,13 +17,6 @@ struct idt_ptr {
 	uint16_t limit;
 	unsigned int base;
 } __attribute__((packed));
-
-struct regs {
-	unsigned int gs, fs, es, ds;
-	unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;
-	unsigned int int_no, err_code;
-	unsigned int eip, cs, eflags, useresp, ss;
-};
 
 void idt_set_gate(uint8_t num, unsigned long base, uint16_t sel, uint8_t flags);
 void idt_install();

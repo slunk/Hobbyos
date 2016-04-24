@@ -27,7 +27,7 @@ void idt_install()
 	idtp.limit = (sizeof(struct idt_entry) * 256) - 1;
 	idtp.base = (unsigned int) &idt;
 
-	memset(&idt, 0, sizeof(struct idt_entry) * 256);
+	memsetb((unsigned char *)&idt, 0, sizeof(struct idt_entry) * 256);
 	idt_load();
 }
 

@@ -1,7 +1,7 @@
 #include <page.h>
 #include <stddef.h>
 #include <printk.h>
-#include <string.h>
+#include <system.h>
 
 #define MEM_SZ (1024 * 1024 * 4)
 #define PAGE_SZ (1024 * 4)

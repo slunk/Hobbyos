@@ -1,7 +1,6 @@
+#include <system.h>
 #include <printk.h>
 #include <keyboard.h>
-
-uint8_t inportb(uint16_t _port);
 
 unsigned char kbd_us[128] = {
 	0, 27,

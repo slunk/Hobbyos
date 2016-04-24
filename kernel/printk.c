@@ -4,6 +4,7 @@
 #include <string.h>
 #include <display.h>
 #include <printk.h>
+#include <system.h>
 
 /*
  * chr

@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdarg.h>
+#include <system.h>
 #include <string.h>
 #include <display.h>
 
@@ -68,7 +69,7 @@ void terminal_putchar(char c)
 	size_t bytes = (terminal_row + 1) * VGA_WIDTH - index;
 	switch (c) {
 	case '\n':
-		memset(&terminal_buffer[index], 0, bytes);
+		memsetw(&terminal_buffer[index], 0, bytes);
 		terminal_column = 0;
 		if (++terminal_row == VGA_HEIGHT) {
 			terminal_column = 0;
@@ -104,7 +105,7 @@ void terminal_scroll()
 	memcpy(terminal_buffer,
 		&terminal_buffer[VGA_WIDTH],
 		(VGA_HEIGHT - 1) * VGA_WIDTH * sizeof(*terminal_buffer));
-	memset(&terminal_buffer[VGA_WIDTH * (VGA_HEIGHT - 1)],
+	memsetw(&terminal_buffer[VGA_WIDTH * (VGA_HEIGHT - 1)],
 		0, VGA_WIDTH * sizeof(*terminal_buffer));
 	terminal_row = VGA_HEIGHT - 1;
 }
